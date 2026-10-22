@@ -39,6 +39,7 @@ class AppSettings(BaseSettings):
     """Класс для получения данных приложения"""
     
     SECRET_TOKEN: str
+    SECRET_HEADER: str
     
     model_config = SettingsConfigDict(
             env_prefix='APP_',

@@ -4,7 +4,7 @@ from collections.abc import AsyncGenerator
 from typing import Literal
 
 from sqlalchemy import URL, text
-from sqlalchemy.exc import OperationalError
+from sqlalchemy.exc import DBAPIError, OperationalError
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
@@ -85,8 +85,10 @@ class DatabaseManager:
                 async with self.engine.connect() as conn:
                     await conn.execute(text("SELECT 1"))
                 logger.info(f"{self.db_type} работает и готов принимать SQL запросы")
+                
                 return
-            except OperationalError:
+            
+            except (DBAPIError, OperationalError):
                 logger.info(f"{self.db_type} не готова ({i+1}/{retries}). Ждем {delay} сек...")
                 await asyncio.sleep(delay)
 

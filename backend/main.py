@@ -19,11 +19,11 @@ async def lifespan(app: FastAPI):
     try:
         await cfg.wait_db(retries=10, delay=2)
         await redis.init(retries_for_ping=10)
-        
+
         yield
+    
     finally:
         await cfg.dispose()
-
 
 app = FastAPI(lifespan=lifespan)
 
