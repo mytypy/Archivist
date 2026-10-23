@@ -1,4 +1,4 @@
-from sqlalchemy import BigInteger, ForeignKey
+from sqlalchemy import BigInteger, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from db.base import Model, int_pk
@@ -18,3 +18,7 @@ class UserChat(Model):
     
     user_id: Mapped[int] = mapped_column(ForeignKey('user.user_id', ondelete='CASCADE'))
     chat_id: Mapped[int] = mapped_column(ForeignKey('chat.chat_id', ondelete='CASCADE'))
+    
+    __table_args__ = (
+        UniqueConstraint("user_id", "chat_id", name='user_chat_id_unique'),
+    )

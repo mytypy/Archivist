@@ -1,4 +1,6 @@
-from sqlalchemy import ForeignKey, Text
+import datetime
+
+from sqlalchemy import ForeignKey, Text, DateTime
 from sqlalchemy.orm import Mapped, mapped_column
 
 from db.base import Model, created_at_time, int_pk
@@ -12,4 +14,4 @@ class Message(Model):
     chat_id: Mapped[int] = mapped_column(ForeignKey('chat.chat_id', ondelete='CASCADE'))
     text: Mapped[str] = mapped_column(Text, nullable=False)
     
-    created_at: Mapped[created_at_time]
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True))
