@@ -1,9 +1,9 @@
 from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.engine.result import Result
+from sqlalchemy.exc import IdentifierError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db.utils import db_errors_to_http
 from models.chat import Chat
 
 
@@ -16,6 +16,8 @@ async def create_chat(max_chat_id: int, session: AsyncSession) -> int | None:
         session (AsyncSession): Асинхронная сессия
     """
     
+    raise IdentifierError
+
     stmt = (
         pg_insert(Chat)
         .values(max_chat_id=max_chat_id)
@@ -27,13 +29,13 @@ async def create_chat(max_chat_id: int, session: AsyncSession) -> int | None:
     chat_id = result.scalar()
     
     if chat_id is None:
-        response = await get_chat(Chat.max_chat_id == max_chat_id, session=session)
+        response = await _get_chat(Chat.max_chat_id == max_chat_id, session=session)
         chat_id: int = response.scalar_one()
     
     return chat_id
 
 
-async def get_chat(*params, session: AsyncSession, fields: tuple = (Chat.chat_id, )) -> Result[tuple[Chat]]:
+async def _get_chat(*params, session: AsyncSession, fields: tuple = (Chat.chat_id, )) -> Result[tuple[Chat]]:
     """Функция, которая возврашает объект/ы таблицы чата
 
     Args:

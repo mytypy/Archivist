@@ -30,9 +30,9 @@ async def handle_message(message: Message, session: AsyncSession = session) -> J
     max_id: int = message.max_id
     max_chat_id: int = message.chat_id
     
-    user_id = int(await get_user_cache(max_id=max_id))
-    chat_id = int(await get_chat_cache(chat_max_id=max_chat_id))
-    user_chat_id = int(await get_user_chat(max_id=max_id, chat_max_id=max_chat_id))
+    user_id = await get_user_cache(max_id=max_id)
+    chat_id = await get_chat_cache(chat_max_id=max_chat_id)
+    user_chat_id = await get_user_chat(max_id=max_id, chat_max_id=max_chat_id)
     
     async with session.begin(): # Тут авто-коммит
         if not user_id:
@@ -47,7 +47,7 @@ async def handle_message(message: Message, session: AsyncSession = session) -> J
             user_chat_id = await create_user_chat(user_id=user_id, chat_id=chat_id, session=session)
             await set_user_chat(max_id=max_id, chat_max_id=max_chat_id, user_chat_id=user_chat_id)
         
-        await create_message(user_id=user_id, chat_id=chat_id,
+        await create_message(user_id=int(user_id), chat_id=int(chat_id),
                              text=message.text, timestamp=message.timestamp, session=session)
             
     return JSONResponse(content={'response': 'Сообщение успешно создано'}, status_code=status.HTTP_200_OK)

@@ -1,4 +1,4 @@
-from services.my_redis.redis import redis
+from services.my_redis.my_redis import redis
 
 
 async def get_user_cache(max_id: int) -> int | None:

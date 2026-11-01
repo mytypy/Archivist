@@ -3,7 +3,6 @@ import datetime
 from sqlalchemy import Result, insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db.utils import db_errors_to_http
 from models.message import Message
 
 
@@ -28,7 +27,7 @@ async def create_message(user_id: int, chat_id: int, text: str, timestamp: datet
     await session.execute(stmt)
 
 
-async def get_message(*params, session: AsyncSession, fields: tuple = (Message.message_id, )) -> Result[tuple[Message]]:
+async def _get_message(*params, session: AsyncSession, fields: tuple = (Message.message_id, )) -> Result[tuple[Message]]:
     """Функция, которая возврашает объект/ы сообщения
 
     Args:

@@ -80,10 +80,13 @@ class DatabaseManager:
             RuntimeError: Ошибка, если БД недоступна
         """
 
-        for i in range(retries):
+        for i in range(1, retries + 1):
             try:
+                logger.info(f"Пробуем подклчюиться к {self.db_type}. Попытка №{i}")
+                
                 async with self.engine.connect() as conn:
                     await conn.execute(text("SELECT 1"))
+                    
                 logger.info(f"{self.db_type} работает и готов принимать SQL запросы")
                 
                 return

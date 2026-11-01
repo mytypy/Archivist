@@ -3,7 +3,6 @@ from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.engine.result import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db.utils import db_errors_to_http
 from models.user import User, UserChat
 
 
@@ -27,13 +26,13 @@ async def create_user(max_id: int, session: AsyncSession) -> int | None:
     user_id = result.scalar()
     
     if user_id is None:
-        response = await get_user(User.max_id == max_id, session=session)
+        response = await _get_user(User.max_id == max_id, session=session)
         user_id: int = response.scalar_one()
     
     return user_id
 
 
-async def get_user(*params, session: AsyncSession, fields: tuple = (User.user_id, )) -> Result[tuple[User]]:
+async def _get_user(*params, session: AsyncSession, fields: tuple = (User.user_id, )) -> Result[tuple[User]]:
     """Функция, которая возврашает объект/ы таблицы пользователя
 
     Args:
@@ -74,13 +73,13 @@ async def create_user_chat(user_id: int, chat_id: int, session: AsyncSession) ->
     user_chat_id = result.scalar()
         
     if user_chat_id is None:
-        response = await get_user_chat(UserChat.user_id == user_id, UserChat.chat_id == chat_id, session=session)
+        response = await _get_user_chat(UserChat.user_id == user_id, UserChat.chat_id == chat_id, session=session)
         user_chat_id: int = response.scalar_one()
         
     return user_chat_id
 
 
-async def get_user_chat(*params, session: AsyncSession, fields: tuple = (UserChat.user_chat_id, )) -> Result[tuple[UserChat]]:
+async def _get_user_chat(*params, session: AsyncSession, fields: tuple = (UserChat.user_chat_id, )) -> Result[tuple[UserChat]]:
     """Функция, которая возврашает объект/ы таблицы чата пользователя
 
     Args:

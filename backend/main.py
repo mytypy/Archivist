@@ -5,7 +5,8 @@ from fastapi import APIRouter, FastAPI
 
 from api.routes.message.message import router as message_router
 from db.manager import cfg
-from services.my_redis.redis import redis
+from services.exceptions.exception_handler import handler_registrator
+from services.my_redis.my_redis import redis
 
 logging.basicConfig(
     level=logging.INFO,
@@ -27,7 +28,7 @@ async def lifespan(app: FastAPI):
         await cfg.dispose()
 
 app = FastAPI(lifespan=lifespan)
-
+handler_registrator(app=app)
 
 api = APIRouter(prefix='/api')
 

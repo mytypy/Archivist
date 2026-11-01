@@ -1,9 +1,9 @@
 import datetime
 
-from sqlalchemy import ForeignKey, Text, DateTime
+from sqlalchemy import DateTime, ForeignKey, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
-from db.base import Model, created_at_time, int_pk
+from db.base import Model, int_pk
 
 
 class Message(Model):
@@ -12,6 +12,7 @@ class Message(Model):
     message_id: Mapped[int_pk]
     user_id: Mapped[int] = mapped_column(ForeignKey('user.user_id', ondelete='SET NULL'), nullable=True)
     chat_id: Mapped[int] = mapped_column(ForeignKey('chat.chat_id', ondelete='CASCADE'))
+    reply_to: Mapped[int] = mapped_column(ForeignKey('message.message_id', ondelete='CASCADE'), nullable=True)
     text: Mapped[str] = mapped_column(Text, nullable=False)
     
     created_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True))

@@ -1,18 +1,26 @@
 import logging
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import redis.asyncio as aioredis
 
 from core.config import RedisSettings
 
+logger = logging.getLogger(__name__)
 
-class Redis(aioredis.Redis):
+if TYPE_CHECKING:
+    class BaseRedis(aioredis.Redis):
+        """Класс для подсказок в IDE"""
+else:
+    class BaseRedis:
+        """Класс для затычки в runtime"""
+    
+    
+class Redis(BaseRedis):
     """Класс для разных взаимодействий с Redis"""
     
     def __init__(self):
         redis_settings = RedisSettings()
-        self.redis = aioredis.Redis(host=redis_settings.HOST, port=redis_settings.PORT, decode_responses=True)
-        self.logger = logging.getLogger(__name__)
+        self.redis: aioredis.Redis = aioredis.Redis(host=redis_settings.HOST, port=redis_settings.PORT, decode_responses=True)
 
     async def ping(self, retries_for_ping: int = 10) -> None:
         """Функция для проверки состояния redis сервера
@@ -21,17 +29,17 @@ class Redis(aioredis.Redis):
             retries_for_ping (int, optional): Кол-во попыток для пинга. ПО умолчанию 10.
 
         Raises:
-            RuntimeError: _description_
+            RuntimeError: Исключение, если мы не получили ответа от сервиса
         """
         for i in range(1, retries_for_ping + 1):
-            self.logger.info(f"Пробуем подклчюиться к Redis. Попытка №{i}")
+            logger.info(f"Пробуем подклчюиться к Redis. Попытка №{i}")
             
             try:
                 await self.redis.ping()
                 
                 break
             except Exception as er:  # noqa: BLE001
-                self.logger.error(f'Неудалось подключиться к Redis: {er}')
+                logger.error(f'Неудалось подключиться к Redis: {er}')
         else:
             raise RuntimeError('Неудалось подключиться к Redis')
         
@@ -47,7 +55,7 @@ class Redis(aioredis.Redis):
         
         await self.ping(retries_for_ping=retries_for_ping)
         
-        self.logger.info('Успешно подключились к Redis!')
+        logger.info('Успешно подключились к Redis!')
     
     async def close(self) -> None:
         """Функция для закрытия соединения Redis"""
@@ -70,3 +78,13 @@ class Redis(aioredis.Redis):
 
 
 redis = Redis()
+
+
+async def get_redis() -> aioredis.Redis:
+    """Функция для получения объекта redis
+
+    Returns:
+        aioredis.Redis: Объект класса aioredis.Redis
+    """
+    
+    return redis.redis
