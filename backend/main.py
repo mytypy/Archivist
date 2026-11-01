@@ -1,7 +1,8 @@
 import logging
 from contextlib import asynccontextmanager
 
-from fastapi import APIRouter, FastAPI
+from fastapi import APIRouter, FastAPI, status
+from fastapi.responses import JSONResponse
 
 from api.routes.message.message import router as message_router
 from db.manager import cfg
@@ -32,6 +33,21 @@ handler_registrator(app=app)
 
 api = APIRouter(prefix='/api')
 
+
+@api.get('/health/')
+async def is_health() -> JSONResponse:
+    """Функция для проверки работы сервиса
+
+    Returns:
+        JSONResponse: Ответ, если все ок
+    """
+    
+    return JSONResponse(
+        content={'response': 'I\'m Okay'},
+        status_code=status.HTTP_200_OK
+    )
+    
+    
 api.include_router(message_router)
 
 app.include_router(api)
