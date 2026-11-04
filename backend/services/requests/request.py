@@ -30,5 +30,5 @@ async def check_llm_service(delay: float = 3.0) -> bool:
                     return True
                 
         except Exception as er:
-            logger.error('Ошибка при запросе к llm-service: %s', str(er))
+            logger.error('Ошибка при запросе к llm-service: %s\nПробуем еще раз', str(er))
             await asyncio.sleep(delay)
