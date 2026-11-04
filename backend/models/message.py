@@ -15,4 +15,5 @@ class Message(Model):
     reply_to: Mapped[int] = mapped_column(ForeignKey('message.message_id', ondelete='CASCADE'), nullable=True)
     text: Mapped[str] = mapped_column(Text, nullable=False)
     
-    created_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True))
+    due_date: Mapped[datetime.datetime | None] = mapped_column(DateTime(), nullable=True)
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime())

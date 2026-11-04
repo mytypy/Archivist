@@ -1,12 +1,26 @@
 import asyncio
 import logging
 
+from pydantic import BaseModel
+
 from agents.agent import Agent
 
 logger = logging.getLogger(name=__name__)
 
 
-async def ai_retryies(max_retries: int, agent: Agent, error_msg: str, data_for_agent: dict):
+async def ai_retryies(max_retries: int, agent: Agent, error_msg: str, data_for_agent: dict) -> str | BaseModel:
+    """Функция-обертка для обработки ошибок при запросах
+
+    Args:
+        max_retries (int): Максимальное кол-во попыток отправить запроса
+        agent (Agent): Объект агента
+        error_msg (str): Сообщение с ошибкой, которое вернется и выведется
+        data_for_agent (dict): Данные для агента
+
+    Returns:
+        str | BaseModel: Текст с ошибкой или объект BaseModel
+    """
+    
     error = None
     try:
         result = await agent.invoke(data_for_agent)

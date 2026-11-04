@@ -1,6 +1,6 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-ENV_FILE_PATH = '../.env'
+ENV_FILE_PATH = './.env'
 
 
 class DatabaseSettings(BaseSettings):
@@ -40,6 +40,7 @@ class AppSettings(BaseSettings):
     
     SECRET_TOKEN: str
     SECRET_HEADER: str
+    AI_SERVICE_URL: str
     
     model_config = SettingsConfigDict(
             env_prefix='APP_',

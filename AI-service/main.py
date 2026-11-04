@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 from fastapi import APIRouter, FastAPI, status
 from fastapi.responses import JSONResponse
 
+from agents.checker import check_model
 from api.routes.models import router as model_router
 
 logging.basicConfig(
@@ -15,12 +16,17 @@ logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):    
+async def lifespan(app: FastAPI):
+    """Главная функция, которая запускает сервер, если модель прогрелась
+
+    Args:
+        app (FastAPI): Объект приложения
+    """
+    
     try:
-        pass
+        await check_model(delay=3.0)
         
         yield
-    
     finally:
         pass
     
@@ -30,12 +36,12 @@ app = FastAPI(lifespan=lifespan)
 api = APIRouter(prefix='/api')
 
 
-@api.get('/health/')
+@app.get('/health/')
 async def is_health() -> JSONResponse:
     """Функция для проверки работы сервиса
 
     Returns:
-        JSONResponse: Ответ, если все ок
+        JSONResponse: Ответ, если модель прогрета
     """
     
     return JSONResponse(

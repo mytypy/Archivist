@@ -1,5 +1,50 @@
 name: Archivist
 services:
+  llm:
+    build:
+      context: AI/
+      dockerfile: Dockerfile
+    container_name: llm-model
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    restart: unless-stopped
+    gpus: all
+  
+  llm-service:
+    build:
+      context: AI-service/
+      dockerfile: Dockerfile
+    
+    container_name: llm_service
+    ports:
+      - "8001:8000"
+    depends_on:
+      llm:
+        condition: service_started
+    volumes:
+      - ./.env:/app/.env
+    
+  backend:
+    build:
+      context: backend/
+      dockerfile: Dockerfile
+    container_name: backend_container
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./.env:/app/.env
+    env_file:
+      - .env
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      llm-service:
+        condition: service_started
+
   database:
     image: postgres:17-alpine
     container_name: archivist_db
@@ -43,5 +88,7 @@ services:
 
 
 volumes:
+  model:
   archivist_db:
   archivist_valkey_data:
+  ollama:

@@ -10,7 +10,7 @@ from crud.message import create_message
 from crud.user import create_user, create_user_chat
 from db.manager import get_db_session
 from schemas.request.request import Message
-from services.utils.auth.auth import (
+from utils.auth.auth import (
     get_chat_cache,
     get_user_cache,
     get_user_chat,
