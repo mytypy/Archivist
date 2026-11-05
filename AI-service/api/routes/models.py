@@ -23,7 +23,7 @@ from utils.utils import normalize_data_to_message_for_reply
 router = APIRouter(prefix='/model', tags=['Работа с агентами'])
 
 
-@router.post('/validate-question')
+@router.post('/validate-question/')
 async def validate_question(data: QuestionModel, response: Response) -> dict[str, SafetyOutput | str]:
     """Ручка для валидации запроса в личные сообщении бота
 
@@ -42,7 +42,7 @@ async def validate_question(data: QuestionModel, response: Response) -> dict[str
     return {'response': my_response}
 
 
-@router.post('/validate-chat-message')
+@router.post('/validate-chat-message/')
 async def validate_chat_message(data: MessageModel, response: Response) -> dict[str, MessageValidatorOutput | str]:
     """Ручка для валидации сообщения из чата
 
@@ -61,7 +61,7 @@ async def validate_chat_message(data: MessageModel, response: Response) -> dict[
     return {'response': my_response}
 
 
-@router.post('/get-filters')
+@router.post('/get-filters/')
 async def get_filters_from_model(data: ForFilterModel, response: Response) -> dict[str, FilterOutput | str]:
     """Ручка для получения фильтров поиска в БД
 
@@ -80,7 +80,7 @@ async def get_filters_from_model(data: ForFilterModel, response: Response) -> di
     return {'response': my_response}
 
 
-@router.post('/get-answer')
+@router.post('/get-answer/')
 async def get_answer(data: ForAnswerModel, response: Response) -> dict[str, FinallyAnswerOutput | str]:
     """Ручка для получения финального ответа с домашним заданием
 

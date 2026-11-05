@@ -25,7 +25,7 @@ session = Depends(get_db_session)
 logger = logging.getLogger(name=__name__)
 
 
-@router.post('/add/')
+@router.post('/add-message/')
 async def handle_message(message: Message, session: AsyncSession = session) -> JSONResponse:
     max_id: int = message.max_id
     max_chat_id: int = message.chat_id
@@ -47,7 +47,12 @@ async def handle_message(message: Message, session: AsyncSession = session) -> J
             user_chat_id = await create_user_chat(user_id=user_id, chat_id=chat_id, session=session)
             await set_user_chat(max_id=max_id, chat_max_id=max_chat_id, user_chat_id=user_chat_id)
         
-        await create_message(user_id=int(user_id), chat_id=int(chat_id),
+        await create_message(user_id=user_id, chat_id=chat_id,
                              text=message.text, timestamp=message.timestamp, session=session)
             
     return JSONResponse(content={'response': 'Сообщение успешно создано'}, status_code=status.HTTP_200_OK)
+
+
+# Добавление людей из чата в БД
+
+# Работа в чате
