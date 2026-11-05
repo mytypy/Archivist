@@ -1,32 +1,35 @@
 name: Archivist
 services:
-  llm:
-    build:
-      context: AI/
-      dockerfile: Dockerfile
-    container_name: llm-model
-    volumes:
-      - ollama:/root/.ollama
-    restart: unless-stopped
-    gpus: all
+  # llm:
+  #   build:
+  #     context: AI/
+  #     dockerfile: Dockerfile
+  #   container_name: llm-model
+  #   volumes:
+  #     - ollama:/root/.ollama
+  #   restart: unless-stopped
+  #   gpus: all
 
-    networks:
-      - ollama-llm
+    # networks:
+    #   - ollama-llm
   
-  llm-service:
-    build:
-      context: AI-service/
-      dockerfile: Dockerfile
-    container_name: llm_service
-    depends_on:
-      llm:
-        condition: service_started
-    volumes:
-      - ./.env:/app/.env
+  # llm-service:
+  #   build:
+  #     context: AI-service/
+  #     dockerfile: Dockerfile
+  #   container_name: llm_service
+  #   depends_on:
+  #     llm:
+  #       condition: service_started
+  #   volumes:
+  #     - ./.env:/app/.env
     
-    networks:
-      - backend-llm
-      - ollama-llm
+  #   ports:
+  #     - "8001:8000"
+    
+    # networks:
+    #   - backend-llm
+    #   - ollama-llm
     
   backend:
     build:
@@ -42,11 +45,14 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-      llm-service:
-        condition: service_started
-    networks:
-      - backend-db
-      - backend-llm
+    
+    ports:
+      - "8000:8000"
+      # llm-service:
+      #   condition: service_started
+    # networks:
+    #   - backend-db
+    #   - backend-llm
 
   database:
     image: postgres:17-alpine
@@ -62,8 +68,8 @@ services:
       timeout: 10s
       retries: 5
     
-    networks:
-      - backend-db
+    # networks:
+    #   - backend-db
   
   redis:
     container_name: archivist-redis
@@ -87,25 +93,25 @@ services:
       timeout: 5s
       retries: 5
 
-    networks:
-      - backend-db
+    # networks:
+    #   - backend-db
 
 
 volumes:
-  model:
+  # model:
   archivist_db:
   archivist_valkey_data:
-  ollama:
+  # ollama:
 
 
-networks:
-  backend-db:
-    driver: bridge
+# networks:
+#   backend-db:
+#     driver: bridge
   
-  backend-llm:
-    internal: true
-    driver: bridge
+#   backend-llm:
+#     internal: true
+#     driver: bridge
   
-  ollama-llm:
-    internal: true
-    driver: bridge
+#   ollama-llm:
+#     internal: true
+#     driver: bridge

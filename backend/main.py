@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):    
     try:
         await request.init(retries=10)
-        await check_llm_service(delay=10.0)
+        # await check_llm_service(delay=10.0)
         await cfg.wait_db(retries=10, delay=2)
         await redis.init(retries_for_ping=10)
         

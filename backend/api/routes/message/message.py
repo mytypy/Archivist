@@ -25,7 +25,7 @@ session = Depends(get_db_session)
 logger = logging.getLogger(name=__name__)
 
 
-@router.post('/add/')
+@router.post('/add-messasge/')
 async def handle_message(message: Message, session: AsyncSession = session) -> JSONResponse:
     max_id: int = message.max_id
     max_chat_id: int = message.chat_id
@@ -51,3 +51,8 @@ async def handle_message(message: Message, session: AsyncSession = session) -> J
                              text=message.text, timestamp=message.timestamp, session=session)
             
     return JSONResponse(content={'response': 'Сообщение успешно создано'}, status_code=status.HTTP_200_OK)
+
+
+# Добавление людей из чата в БД
+
+# Работа в чате
