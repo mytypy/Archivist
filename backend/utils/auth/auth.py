@@ -13,6 +13,7 @@ async def get_user_cache(max_id: int) -> int | None:
     
     key = f'user:{max_id}'
     data = await redis.get(name=key)
+    data = int(data) if data is not None else None
     
     return data
 
@@ -29,6 +30,7 @@ async def get_chat_cache(chat_max_id: int) -> int | None:
     
     key = f'chat:{chat_max_id}'
     data = await redis.get(name=key)
+    data = int(data) if data is not None else None
     
     return data
 
@@ -46,6 +48,7 @@ async def get_user_chat(max_id: int, chat_max_id: int) -> int | None:
     
     key = f'user:{max_id}chat:{chat_max_id}'
     data = await redis.get(name=key)
+    data = int(data) if data is not None else None
     
     return data
 
