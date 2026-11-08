@@ -67,14 +67,14 @@ async def get_messages_with_filter(subject: str | None, target_date: datetime.da
         list[dict]: Сообщения с датой отправки
     """
     stmt = (
-        select(Message.text, Message.created_at.label('date_send'))
+        select(Message.text.label('message'), Message.created_at.label('date_send'))
         .where(
             Message.chat_id == chat_id,
             (Message.due_date == target_date) | (
                 (Message.subject == subject) & 
                 (Message.created_at <= target_date) & 
                 (Message.created_at >= days_ago)
-            )
+            ) | ((Message.created_at <= target_date) & (Message.created_at >= days_ago))
             )
         .order_by(asc(Message.created_at))
         .limit(15)
@@ -82,4 +82,10 @@ async def get_messages_with_filter(subject: str | None, target_date: datetime.da
 
     result = await session.execute(stmt)
 
-    return result.mappings().all()
+    return [
+        {
+            "message": row["message"],
+            "date_send": row["date_send"].isoformat()
+        }
+        for row in result.mappings().all()
+    ]

@@ -71,7 +71,7 @@ async def agent_chat_validator(message: str, send_day: datetime.datetime) -> Mes
     response: str | MessageValidatorOutput = await ai_retryies(max_retries=1, agent=agent,
                            error_msg='Ошибка при валидации сообщения. Попробуйте еще раз',
                            data_for_agent=query)
-        
+    
     return response
 
 

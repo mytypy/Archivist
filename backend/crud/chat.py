@@ -48,3 +48,9 @@ async def _get_chat(*params, session: AsyncSession, fields: tuple = (Chat.chat_i
     result = await session.execute(query)
     
     return result
+
+
+async def get_chats(chats_id: list[int], session: AsyncSession):
+    response = await _get_chat(Chat.chat_id.in_(chats_id), session=session, fields=(Chat.title, Chat.chat_id))
+    
+    return response.mappings().all()
