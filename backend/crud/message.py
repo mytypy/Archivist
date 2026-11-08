@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import Result, insert, select, asc
+from sqlalchemy import Result, asc, insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models.message import Message
@@ -8,7 +8,7 @@ from models.message import Message
 
 async def create_message(user_id: int, chat_id: int,
                         text: str, timestamp: datetime.datetime,
-                        subject: str | None, due_date: datetime.datetime | None,
+                        subject: str | None, due_date: datetime.date | None,
                             session: AsyncSession) -> None:
     """Функция, которая создает объект сообщения в БД
 
@@ -52,18 +52,28 @@ async def _get_message(*params, session: AsyncSession, fields: tuple = (Message.
 
 async def get_messages_with_filter(subject: str | None, target_date: datetime.datetime,
                                    chat_id: int,
+                                   days_ago: datetime.datetime,
                                     session: AsyncSession) -> list[dict]:
-    seven_days_ago = target_date - datetime.timedelta(days=7)
+    """Функция для запроса в БД для получения релевантных сообщений из чата
 
-    
+    Args:
+        subject (str | None): Предмет
+        target_date (datetime.datetime): Дата, которая интересует пользователя
+        chat_id (int): Chat id чата из MAX
+        days_ago (datetime.datetime): N дней назад от target_date
+        session (AsyncSession): Асинхронная сессия
+
+    Returns:
+        list[dict]: Сообщения с датой отправки
+    """
     stmt = (
-        select(Message.text, Message.created_at)
+        select(Message.text, Message.created_at.label('date_send'))
         .where(
             Message.chat_id == chat_id,
             (Message.due_date == target_date) | (
                 (Message.subject == subject) & 
                 (Message.created_at <= target_date) & 
-                (Message.created_at >= seven_days_ago)
+                (Message.created_at >= days_ago)
             )
             )
         .order_by(asc(Message.created_at))
@@ -72,4 +82,4 @@ async def get_messages_with_filter(subject: str | None, target_date: datetime.da
 
     result = await session.execute(stmt)
 
-    print(result.mappings().all())
+    return result.mappings().all()

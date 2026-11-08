@@ -13,14 +13,14 @@ from sqlalchemy.ext.asyncio import (
 )
 from sqlalchemy.pool import NullPool
 
-from core.config import DatabaseSettings
+from utils.config.configs import get_db_settings
 
 logger = logging.getLogger(__name__)
 
 
 class DatabaseManager:
     def __init__(self, db_type: Literal['PostgreSQL', 'PG Bouncer'] = 'PostgreSQL'):
-        self.settings = DatabaseSettings()
+        self.settings = get_db_settings()
         self.db_type: Literal['PostgreSQL', 'PG Bouncer'] = db_type
         
         if self.db_type == 'PostgreSQL':
