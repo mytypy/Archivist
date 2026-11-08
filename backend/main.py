@@ -5,6 +5,7 @@ from fastapi import APIRouter, FastAPI, status
 from fastapi.responses import JSONResponse
 
 from api.routes.message.message import router as message_router
+from api.routes.user.user import router as user_router
 from db.manager import cfg
 from services.exceptions.exception_handler import handler_registrator
 from services.my_redis.my_redis import redis
@@ -54,5 +55,6 @@ async def is_health() -> JSONResponse:
     
     
 api.include_router(message_router)
+api.include_router(user_router)
 
 app.include_router(api)
