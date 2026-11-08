@@ -19,8 +19,8 @@ class MessageModel(BaseModel):
 class ForFilterModel(BaseModel):
     """Модель для валидации сообщения из чата для фильтра"""
     
-    message: str = Field(min_length=6, max_length=64, description='Вопрос боту')
-    date_send: datetime.datetime = Field(description='Дата отправки сообщения в боту')
+    question: str = Field(min_length=6, max_length=64, description='Вопрос боту')
+    date_send: datetime.datetime = Field(description='Дата отправки сообщения боту')
     
     
 class ChatMessageModel(BaseModel):

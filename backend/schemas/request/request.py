@@ -18,6 +18,6 @@ class UserQuestion(BaseModel):
 
 
 class UserModel(BaseModel):
-    user_ids: list[int] = Field(description='ID пользователей для добавления')
+    user_ids: list[int] = Field(description='ID пользователей для добавления', min_length=1)
     chat_id: int = Field(description='ID чата')
     chat_title: str = Field(description='Название чата')

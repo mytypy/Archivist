@@ -1,11 +1,10 @@
-from fastapi import APIRouter, Response
-
 from agents.agents import (
     agent_chat_validator,
     agent_filter_maker,
     agent_replyer,
     agent_validator,
 )
+from fastapi import APIRouter, Response
 from schemas.model.model import (
     FilterOutput,
     FinallyAnswerOutput,
@@ -55,7 +54,7 @@ async def validate_chat_message(data: MessageModel, response: Response) -> dict[
     """
     
     my_response = await agent_chat_validator(message=data.message, send_day=data.date_send)
-        
+    
     response.status_code = 500 if isinstance(my_response, str) is True else 200
         
     return {'response': my_response}
@@ -73,7 +72,7 @@ async def get_filters_from_model(data: ForFilterModel, response: Response) -> di
         dict[str, FilterOutput | str]: Ответ с строкой ошибки или с успешным ответом модели
     """
     
-    my_response = await agent_filter_maker(question=data.message, date_send=data.date_send)
+    my_response = await agent_filter_maker(question=data.question, date_send=data.date_send)
     
     response.status_code = 500 if isinstance(my_response, str) is True else 200
             

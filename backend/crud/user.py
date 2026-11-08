@@ -50,6 +50,14 @@ async def _get_user(*params, session: AsyncSession, fields: tuple = (User.user_i
     return result
 
 
+async def get_user(max_id: int, session: AsyncSession):
+    response = await _get_user(User.max_id == max_id, session=session)
+    
+    result: tuple[User] | None = response.scalar_one_or_none()
+    
+    return result if result else None
+    
+    
 async def create_user_chat(user_id: int, chat_id: int, session: AsyncSession) -> int:
     """Функция, которая создает объект чата пользователя и возвращает его ID
 
@@ -118,3 +126,11 @@ async def add_chat_members(members_id: list[int], chat_id: int, session: AsyncSe
         )
         
     await session.execute(insert_user_chats_stmt)
+
+
+async def get_user_chats_db(user_id: int, session: AsyncSession) -> list[int]:
+    result = await _get_user_chat(UserChat.user_id == user_id, session=session, fields=(UserChat.chat_id,))
+    
+    chats_id: list = result.scalars().all()
+    
+    return chats_id

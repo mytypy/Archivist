@@ -40,7 +40,7 @@ app = FastAPI(lifespan=lifespan)
 api = APIRouter(prefix='/api')
 
 
-@api.get('/health/')
+@app.get('/health/')
 async def is_health() -> JSONResponse:
     """Функция для проверки работы сервиса
 
