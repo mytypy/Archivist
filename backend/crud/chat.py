@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from models.chat import Chat
 
 
-async def create_chat(max_chat_id: int, session: AsyncSession) -> int | None:
+async def create_chat(max_chat_id: int, title: str, session: AsyncSession) -> int | None:
     """Функция, которая регистрирует чат
 
     Args:
@@ -17,7 +17,7 @@ async def create_chat(max_chat_id: int, session: AsyncSession) -> int | None:
 
     stmt = (
         pg_insert(Chat)
-        .values(max_chat_id=max_chat_id)
+        .values(max_chat_id=max_chat_id, title=title)
         .on_conflict_do_nothing(index_elements=["max_chat_id"])
         .returning(Chat.chat_id)
         )

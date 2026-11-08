@@ -63,6 +63,8 @@ async def handle_message(message: Message, session: AsyncSession = session) -> J
     
     max_id: int = message.max_id
     max_chat_id: int = message.chat_id
+    chat_title: str = message.chat_title
+    
     
     user_id = await get_user_cache(max_id=max_id)
     chat_id = await get_chat_cache(chat_max_id=max_chat_id)
@@ -74,7 +76,7 @@ async def handle_message(message: Message, session: AsyncSession = session) -> J
             await set_user_cache(max_id=max_id, user_id=user_id)
         
         if not chat_id:
-            chat_id = await create_chat(max_chat_id=max_chat_id, session=session)
+            chat_id = await create_chat(max_chat_id=max_chat_id, title=chat_title, session=session)
             await set_chat_cache(chat_max_id=max_chat_id, chat_id=chat_id)
         
         if not user_chat_id:

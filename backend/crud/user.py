@@ -95,3 +95,26 @@ async def _get_user_chat(*params, session: AsyncSession, fields: tuple = (UserCh
     result = await session.execute(query)
     
     return result
+    
+
+async def add_chat_members(members_id: list[int], chat_id: int, session: AsyncSession):
+    insert_users_stmt = (
+        pg_insert(User)
+        .values([{'max_id': mid} for mid in members_id])
+        .on_conflict_do_nothing(index_elements=['max_id'])
+    )
+    
+    await session.execute(insert_users_stmt)
+
+    users_stmt = select(User.user_id).where(User.max_id.in_(members_id))
+    result = await session.execute(users_stmt)
+    user_ids = result.scalars().all()
+
+    if user_ids:
+        insert_user_chats_stmt = (
+            pg_insert(UserChat)
+            .values([{'user_id': uid, 'chat_id': chat_id} for uid in user_ids])
+            .on_conflict_do_nothing(index_elements=['user_id', 'chat_id'])
+        )
+        
+    await session.execute(insert_user_chats_stmt)
