@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import DateTime, ForeignKey, Text, String
+from sqlalchemy import Date, DateTime, ForeignKey, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from db.base import Model, int_pk
@@ -16,5 +16,5 @@ class Message(Model):
     text: Mapped[str] = mapped_column(Text, nullable=False)
     subject: Mapped[str] = mapped_column(String(64), nullable=True)
     
-    due_date: Mapped[datetime.datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
-    created_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True))
+    due_date: Mapped[datetime.date | None] = mapped_column(Date, nullable=True) # Сухая дата
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=False)) # Дата со временем

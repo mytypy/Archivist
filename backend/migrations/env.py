@@ -18,7 +18,7 @@ manager = DatabaseManager()
 config = context.config
 
 config.set_main_option("sqlalchemy.url",
-                       manager.direct_url.render_as_string(hide_password=False)
+                       manager.direct_url.render_as_string(hide_password=False).replace('%', '%%')
                        )
 
 # Подключение логгера

@@ -13,37 +13,37 @@ class RequestModule:
         self.logger = logging.getLogger(__name__)
     
     async def __test_connection(self, retries: int = 10) -> None:
-        """Функция для тестового запроса к 1.1.1.1
+        """Функция для тестового запроса к 8.8.8.8
 
         Args:
-            retries (int, optional): Кол-во попыток для запроса к 1.1.1.1
+            retries (int, optional): Кол-во попыток для запроса к 8.8.8.8
 
         Raises:
-            RuntimeError: Ошибка, если неудалось сделать запрос к 1.1.1.1 спустя retries попыток
+            RuntimeError: Ошибка, если неудалось сделать запрос к 8.8.8.8 спустя retries попыток
         """
         
         for i in range(1, retries + 1):
             try:
-                async with self.session.get('https://1.1.1.1/') as response:
-                    self.logger.info(f'Попытка №{i}. Пробуем сделать запрос к 1.1.1.1')
-                    self.logger.info(f'Статус запроса к 1.1.1.1: {response.status}')
+                async with self.session.get('https://8.8.8.8/') as response:
+                    self.logger.info(f'Попытка №{i}. Пробуем сделать запрос к 8.8.8.8')
+                    self.logger.info(f'Статус запроса к 8.8.8.8: {response.status}')
                             
             except Exception as er:  # noqa: BLE001
-                self.logger.error(f'Что-то не так с запросом к 1.1.1.1: {er}')
+                self.logger.error(f'Что-то не так с запросом к 8.8.8.8: {er}')
             else:
                 return
                     
-        raise RuntimeError('Что-то не так с запросом к 1.1.1.1')
+        raise RuntimeError('Что-то не так с запросом к 8.8.8.8')
         
     async def init(self, retries: int = 10) -> None:
         """Функция для инициализации aiohttp сессии
 
         Args:
-            retries (int, optional): Кол-во попыток для запроса к 1.1.1.1
+            retries (int, optional): Кол-во попыток для запроса к 8.8.8.8
         """
         
         self.session = aiohttp.ClientSession(*self.args, **self.kwargs)
-        await self.__test_connection(retries=retries)
+        # await self.__test_connection(retries=retries)
     
     
     async def close(self) -> bool:

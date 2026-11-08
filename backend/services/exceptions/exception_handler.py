@@ -10,7 +10,16 @@ logger = logging.getLogger(name=__name__)
 def handler_registrator(app: FastAPI):
     
     @app.exception_handler(SQLAlchemyError)
-    async def func(request: Request, exc: SQLAlchemyError):
+    async def func(request: Request, exc: SQLAlchemyError) -> JSONResponse:
+        """Функция-обработчик ошибки БД
+
+        Args:
+            request (Request): Объект запроса
+            exc (SQLAlchemyError): Объект ошибки
+
+        Returns:
+            JSONResponse: Сообщение об ошибке
+        """
         logger.error('Ошибка на стороне БД: %s', str(exc))
         
         return JSONResponse(

@@ -2,7 +2,7 @@ from hmac import compare_digest
 
 from fastapi import HTTPException, Request, status
 
-from core.config import AppSettings
+from utils.config.configs import get_app_settings
 
 
 async def is_bot(request: Request):
@@ -15,7 +15,7 @@ async def is_bot(request: Request):
         HTTPException: Ошибка, если передан невалидный токен
     """
     
-    app_settings = AppSettings()
+    app_settings = get_app_settings()
     
     secret_bot_token: str | None = request.headers.get(app_settings.SECRET_HEADER, '')
     

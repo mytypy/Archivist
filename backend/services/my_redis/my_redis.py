@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Any
 
 import redis.asyncio as aioredis
 
-from core.config import RedisSettings
+from utils.config.configs import get_redis_settings
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +19,7 @@ class Redis(BaseRedis):
     """Класс для разных взаимодействий с Redis"""
     
     def __init__(self):
-        redis_settings = RedisSettings()
+        redis_settings = get_redis_settings()
         self.redis: aioredis.Redis = aioredis.Redis(host=redis_settings.HOST, port=redis_settings.PORT, decode_responses=True)
 
     async def ping(self, retries_for_ping: int = 10) -> None:

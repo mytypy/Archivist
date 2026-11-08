@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 class Message(BaseModel):
     chat_id: int = Field(description='Max ID чата')
     max_id: int = Field(description='Max ID владельца сообщения')
-    text: str = Field(description='Текст сообщения', max_length=564)
+    text: str = Field(description='Текст сообщения', min_length=6, max_length=256)
     timestamp: datetime.datetime = Field(description='Время отправки сообщения')
 
 
