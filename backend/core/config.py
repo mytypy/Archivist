@@ -1,6 +1,6 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-ENV_FILE_PATH = './.env'
+ENV_FILE_PATH = '../.env'
 
 
 class DatabaseSettings(BaseSettings):

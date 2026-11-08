@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import DateTime, ForeignKey, Text
+from sqlalchemy import DateTime, ForeignKey, Text, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from db.base import Model, int_pk
@@ -14,6 +14,7 @@ class Message(Model):
     chat_id: Mapped[int] = mapped_column(ForeignKey('chat.chat_id', ondelete='CASCADE'))
     reply_to: Mapped[int] = mapped_column(ForeignKey('message.message_id', ondelete='CASCADE'), nullable=True)
     text: Mapped[str] = mapped_column(Text, nullable=False)
+    subject: Mapped[str] = mapped_column(String(64), nullable=True)
     
-    due_date: Mapped[datetime.datetime | None] = mapped_column(DateTime(), nullable=True)
-    created_at: Mapped[datetime.datetime] = mapped_column(DateTime())
+    due_date: Mapped[datetime.datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True))
