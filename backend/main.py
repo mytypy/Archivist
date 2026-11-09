@@ -35,7 +35,7 @@ async def lifespan(app: FastAPI):
         await request.close()
 
 app = FastAPI(lifespan=lifespan)
-# handler_registrator(app=app)
+handler_registrator(app=app)
 
 api = APIRouter(prefix='/api')
 
