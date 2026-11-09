@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-# Цвета для вывода
 GREEN="\033[1;32m"
 RED="\033[1;31m"
 YELLOW="\033[1;33m"
@@ -9,10 +8,8 @@ BOLD="\033[1m"
 DIM="\033[2m"
 RESET="\033[0m"
 
-# Очистка экрана и курсор при выходе
 trap 'echo -e "\n${RESET}Мониторинг остановлен."; tput cnorm 2>/dev/null; exit 0' SIGINT SIGTERM
 
-# Скрываем мигающий курсор для плавного дашборда
 tput civis 2>/dev/null
 
 DELAY=4
@@ -30,7 +27,6 @@ check_container_status() {
 }
 
 while true; do
-    # Очистка экрана
     clear
 
     CURRENT_TIME=$(date "+%H:%M:%S")
@@ -47,7 +43,6 @@ while true; do
     TOTAL_CHECKS=7
     PASSED_CHECKS=0
 
-    # 1. Проверка контейнеров
     echo -e "${BOLD}1. Docker контейнеры:${RESET}"
 
     declare -A CONTAINERS=(
@@ -74,7 +69,6 @@ while true; do
         fi
     done
 
-    # 2. База данных и кэш
     echo -e "\n${BOLD}2. База данных и Redis:${RESET}"
 
     # PostgreSQL
@@ -94,7 +88,7 @@ while true; do
         printf "  %-30s [ %b ]\n" "Redis ping" "${RED}NO PONG${RESET}"
     fi
 
-    # 3. LLM и Модель
+    # LLM
     echo -e "\n${BOLD}3. Локальная LLM (Qwen 2.5):${RESET}"
 
     OLLAMA_STATUS=$(check_container_status "llm-model")
@@ -109,7 +103,7 @@ while true; do
         printf "  %-30s [ %b ]\n" "Ollama Container" "${RED}OFFLINE${RESET}"
     fi
 
-    # 4. HTTP Healthchecks
+    # HTTP Healthchecks
     echo -e "\n${BOLD}4. Доступность API:${RESET}"
 
     # AI-Service
@@ -139,7 +133,6 @@ while true; do
         printf "  %-30s [ %b ]\n" "Bot Worker (MAX)" "${RED}OFFLINE${RESET}"
     fi
 
-    # 5. Итог
     echo -e "\n${BOLD}${CYAN}-------------------------------------------------------------------------------------${RESET}"
     if [ "$PASSED_CHECKS" -ge 6 ]; then
         echo -e "${BOLD}${GREEN}✔ ВСЕ СЕРВИСЫ УСПЕШНО ЗАПУЩЕНЫ И ГОТОВЫ К РАБОТЕ!${RESET} МОЖЕТЕ РАБОТАТЬ С БОТОМ"
