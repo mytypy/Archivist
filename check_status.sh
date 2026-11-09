@@ -135,7 +135,7 @@ while true; do
 
     echo -e "\n${BOLD}${CYAN}-------------------------------------------------------------------------------------${RESET}"
     if [ "$PASSED_CHECKS" -ge 6 ]; then
-        echo -e "${BOLD}${GREEN}✔ ВСЕ СЕРВИСЫ УСПЕШНО ЗАПУЩЕНЫ И ГОТОВЫ К РАБОТЕ!${RESET} МОЖЕТЕ РАБОТАТЬ С БОТОМ"
+        echo -e "${BOLD}${GREEN}✔ ВСЕ СЕРВИСЫ УСПЕШНО ЗАПУЩЕНЫ И ГОТОВЫ К РАБОТЕ!${RESET} МОЖЕТЕ РАБОТАТЬС БОТОМ"
     else
         echo -e "${BOLD}${YELLOW}⏳ Идёт запуск/прогрев сервисов (${PASSED_CHECKS}/6 готовы)...${RESET}"
         echo -e "${DIM}Логи: docker logs -f llm-model | docker logs -f llm_service${RESET}"
