@@ -5,13 +5,13 @@ from schemas.request.request import ChatMessageModel
 
 
 async def date_injection(date: datetime.datetime) -> str:
-    """Функция, которая формирует текст с датой в нормальном виде
+    """Функция для нормализации даты в строку в готовом формате 
 
     Args:
         date (datetime.datetime): Объект даты
 
     Returns:
-        str: Текст с датой
+        str: строка в формате 'Сегодня [Число] [День недели], [ГГГГ-ММ-ДД ЧЧ-ММ-СС]'
     """
     week_day = DAYS_RU[date.weekday()]
     format_day = date.strftime("%Y-%m-%d %H:%M:%S")
@@ -26,7 +26,7 @@ async def normalize_data_to_message_for_reply(user_question: str, date_send: dat
                                               date_range_start: datetime.datetime,
                                               date_range_stop: datetime.datetime
                                               ) -> str: 
-    """Функция, которая формирует текст c сообщениями из чата
+    """Функция для формирования текста c сообщениями из чата
     
     Args:
         user_question (str): Вопрос пользователя

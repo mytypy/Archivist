@@ -10,7 +10,7 @@ async def create_message(user_id: int, chat_id: int,
                         text: str, timestamp: datetime.datetime,
                         subject: str | None, due_date: datetime.date | None,
                             session: AsyncSession) -> None:
-    """Функция, которая создает объект сообщения в БД
+    """Функция для создания объекта сообщения в БД
 
     Args:
         user_id (int): ID пользователя
@@ -33,7 +33,7 @@ async def create_message(user_id: int, chat_id: int,
 
 
 async def _get_message(*params, session: AsyncSession, fields: tuple = (Message.message_id, )) -> Result[tuple[Message]]:
-    """Функция, которая возврашает объект/ы сообщения
+    """Функция для получения объекта/ов сообщения
 
     Args:
         session (AsyncSession): Асинхронная сессия
@@ -54,7 +54,7 @@ async def get_messages_with_filter(subject: str | None, target_date: datetime.da
                                    chat_id: int,
                                    days_ago: datetime.datetime,
                                     session: AsyncSession) -> list[dict]:
-    """Функция для запроса в БД для получения релевантных сообщений из чата
+    """Функция для получения релевантных сообщений из чата
 
     Args:
         subject (str | None): Предмет

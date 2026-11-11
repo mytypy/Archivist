@@ -31,7 +31,7 @@ async def bot_added(event: BotAdded):
     if not members_id:
         await event.bot.send_message(
             chat_id=event.chat_id,
-            text='Неудалось получить всех участников из чата. Пожалуйста, добавьте меня в беседу еще раз или напишите в службу поддержки'
+            text='Не удалось получить всех участников из чата. Пожалуйста, добавьте меня в беседу еще раз или напишите в службу поддержки'
         )
     
     response_for_add_user: str | dict = await request_to_add_users(members_id=members_id, chat_id=chat_id, chat_title=event.chat.title[:32])
@@ -41,7 +41,7 @@ async def bot_added(event: BotAdded):
         
         await event.bot.send_message(
             chat_id=event.chat_id,
-            text='Неудалось получить всех участников из чата. Пожалуйста, добавьте меня в беседу еще раз или напишите в службу поддержки'
+            text='Не удалось получить всех участников из чата. Пожалуйста, добавьте меня в беседу еще раз или напишите в службу поддержки'
         )
     else:
         message = response_for_add_user['response']
@@ -49,7 +49,7 @@ async def bot_added(event: BotAdded):
         
         await event.bot.send_message(
             chat_id=event.chat_id,
-            text='Инициализация прошла успешно!'
+            text='Регистрация чата прошла успешно!'
         )
 
 
@@ -88,5 +88,5 @@ async def on_permissions_changed(event: BotAdminPermissionsChanged):
         logger.warning(f"У бота забрали права администратора в чате {chat_id}")
         await event.bot.send_message(
             chat_id=chat_id,
-            text="⚠️ У меня забрали права администратора. Теперь я не смогу отслеживать домашние задания во флуде."
+            text="⚠️ У меня забрали права администратора. Теперь я не могу отслеживать домашние задания."
         )

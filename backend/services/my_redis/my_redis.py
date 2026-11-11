@@ -26,31 +26,31 @@ class Redis(BaseRedis):
         """Функция для проверки состояния redis сервера
 
         Args:
-            retries_for_ping (int, optional): Кол-во попыток для пинга. ПО умолчанию 10.
+            retries_for_ping (int, optional): Кол-во попыток для пинга. По умолчанию 10.
 
         Raises:
-            RuntimeError: Исключение, если мы не получили ответа от сервиса
+            RuntimeError: Исключение, если не получен ответ от сервиса
         """
         for i in range(1, retries_for_ping + 1):
-            logger.info(f"Пробуем подклчюиться к Redis. Попытка №{i}")
+            logger.info(f"Пробуем подключиться к Redis. Попытка №{i}")
             
             try:
                 await self.redis.ping()
                 
                 break
             except Exception as er:  # noqa: BLE001
-                logger.error(f'Неудалось подключиться к Redis: {er}')
+                logger.error(f'Не удалось подключиться к Redis: {er}')
         else:
-            raise RuntimeError('Неудалось подключиться к Redis')
+            raise RuntimeError('Не удалось подключиться к Redis')
         
     async def init(self, retries_for_ping: int = 10) -> None:
-        """Функция для иницализации Redis клиента
+        """Функция для инициализации Redis клиента
 
         Args:
             retries_for_ping (int, optional): Кол-во попыток для пинга Redis
 
         Raises:
-            RuntimeError: Ошибка, если неудлаось пингануть Redis спустя retries_for_ping попыток
+            RuntimeError: Исключение, если не удалось пингануть Redis спустя retries_for_ping попыток
         """
         
         await self.ping(retries_for_ping=retries_for_ping)
@@ -64,8 +64,8 @@ class Redis(BaseRedis):
     
     def __getattr__(self, name: str) -> Any:
         """
-        Магический метод для получения метода, которого нет в классе
-        (делается для того, чтобы можно было использовать в сочетании с наследованием)
+        Магический(dunder) метод для получения аттрибута, которого нет в классе
+        (нужен для использования в сочетании с наследованием)
 
         Args:
             name (str): Имя аттрибута

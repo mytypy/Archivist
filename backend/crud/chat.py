@@ -7,7 +7,7 @@ from models.chat import Chat
 
 
 async def create_chat(max_chat_id: int, title: str, session: AsyncSession) -> int | None:
-    """Функция, которая регистрирует чат
+    """Функция для регистрации чат
 
     Args:
         max_chat_id (int): Max Chat ID чата
@@ -33,7 +33,7 @@ async def create_chat(max_chat_id: int, title: str, session: AsyncSession) -> in
 
 
 async def _get_chat(*params, session: AsyncSession, fields: tuple = (Chat.chat_id, )) -> Result[tuple[Chat]]:
-    """Функция, которая возврашает объект/ы таблицы чата
+    """Функция для получения объекта/ов таблицы чата
 
     Args:
         session (AsyncSession): Асинхронная сессия

@@ -6,7 +6,7 @@ from utils.config.configs import get_app_settings
 
 
 async def is_bot(request: Request):
-    """Зависимость, которая проверяет секретный токен приложения
+    """Зависимость для проверки секретного токена приложения
 
     Args:
         request (Request): Объект запроса

@@ -19,7 +19,7 @@ from utils.utils import date_injection
 
 
 async def agent_validator(question: str) -> SafetyOutput | str:
-    """Агент, который валидирует вопрос пользователя в личных сообщениях
+    """Агент для валидации вопроса пользователя в личных сообщениях
 
     Args:
         question (str): Вопрос пользователя
@@ -43,7 +43,7 @@ async def agent_validator(question: str) -> SafetyOutput | str:
 
 
 async def agent_chat_validator(message: str, send_day: datetime.datetime) -> MessageValidatorOutput | str:
-    """Агент, который валидирует сообщение из чата
+    """Агент для валидации сообщение из чата
     
     Args:
         message (str): Текст сообщения
@@ -76,7 +76,7 @@ async def agent_chat_validator(message: str, send_day: datetime.datetime) -> Mes
 
 
 async def agent_filter_maker(question: str, date_send: datetime.datetime) -> str | FilterOutput:
-    """Агент, который выдает фильтры для поиска в БД
+    """Агент для создания фильтров поиска в БД
         
     Args:
         question (str): Вопрос пользователя
@@ -109,7 +109,7 @@ async def agent_filter_maker(question: str, date_send: datetime.datetime) -> str
 
 
 async def agent_replyer(message: str) -> FinallyAnswerOutput | str:
-    """Агент, который выдает ответ на вопрос пользователя с домашним заданием
+    """Агент для ответа на вопрос пользователя с домашним заданием
 
     Args:
         message (str): Сформированное сообщение в формате "сообщение - время"
