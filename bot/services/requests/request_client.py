@@ -4,8 +4,7 @@ import aiohttp
 
 
 class RequestModule:
-    """Класс для различных взаимодействий с aiohttp
-    """
+    """Класс для взаимодействия с aiohttp"""
     
     def __init__(self, *args, **settings):
         self.args = args
@@ -13,7 +12,7 @@ class RequestModule:
         self.logger = logging.getLogger(__name__)
     
     async def __test_connection(self, retries: int = 10) -> None:
-        """Функция для тестового запроса к 8.8.8.8
+        """Метод для тестового запроса к 8.8.8.8
 
         Args:
             retries (int, optional): Кол-во попыток для запроса к 8.8.8.8
@@ -36,7 +35,7 @@ class RequestModule:
         raise RuntimeError('Что-то не так с запросом к 8.8.8.8')
         
     async def init(self, retries: int = 10) -> None:
-        """Функция для инициализации aiohttp сессии
+        """Метод для инициализации aiohttp сессии
 
         Args:
             retries (int, optional): Кол-во попыток для запроса к 8.8.8.8
@@ -47,7 +46,7 @@ class RequestModule:
     
     
     async def close(self) -> bool:
-        """Функция для закрытия сессии"""
+        """Метод для закрытия сессии"""
         if self.session.closed is False:
             await self.session.close()
         
