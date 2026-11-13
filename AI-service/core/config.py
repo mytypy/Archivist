@@ -5,6 +5,7 @@ ENV_FILE = './.env'
 
 class AppSettings(BaseSettings):
     MODEL_URL: str
+    MODEL: str
     
     model_config = SettingsConfigDict(
         env_file=ENV_FILE,

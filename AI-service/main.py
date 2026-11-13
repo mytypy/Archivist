@@ -24,7 +24,7 @@ async def lifespan(app: FastAPI):
     """
     
     try:
-        await check_model(delay=3.0)
+        await check_model(delay=1)
         
         yield
     finally:

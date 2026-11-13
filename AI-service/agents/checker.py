@@ -1,43 +1,39 @@
 import asyncio
 import logging
 
-from agents.agent import Agent
-from constants.settings import MODEL
-from schemas.model.model import (
-    SimpleResponse,
-)
+from agents.agents import agent_checker
 
 logger = logging.getLogger(name=__name__)
 
 
-async def check_model(delay: float = 3.0) -> bool:
+async def check_model(delay: float = 3, max_attempt: int = 60) -> bool:
     """Функция для проверки прогретости модели
 
     Args:
-        delay (float, optional): Задержка между запросами при ошибке. По умолчанию 3.0.
+        delay (float, optional): Задержка в секундах между запросами при ошибке. По умолчанию 3 секунды.
+        max_attempt (int, optional): Максимальное кол-во попыток отправить запрос. По умолчанию 60 попыток.
 
     Returns:
         bool: True, если модель прогрелась
     """
     
     logger.info('Начинаем прогрев модели')
-    
-    agent = Agent(model_name=MODEL,
-        system_prompt='',
-        pydantic_object=SimpleResponse,
-        temperature=0.1)
+    logger.info(f'Задержка между запросами = {delay} секунды')
     
     message = 'Ты готов?'
     query = {'input_data': message}
     
-    while True:
-        logger.info('Пробуем сделать запрос...')
+    for attempt in range(1, max_attempt):
+        logger.info(f'Попытка №{attempt}. Пробуем сделать запрос...')
         
         try:
-            await agent.invoke(query=query)
-            logger.info('Модель прогрелась! Запускаю сервер!')
+            await agent_checker.invoke(query=query)
+            logger.info('Модель прогрелась. Запускаю сервер!')
             
             return True
         except Exception as er:
             logger.error('Ошибка при запросе к модели: %s\n', er)
+            
             await asyncio.sleep(delay)
+            
+    raise RuntimeError(f'Модель не запустилась спустя {max_attempt} попыток')
