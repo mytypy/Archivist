@@ -1,1 +1,0 @@
-MODEL = 'qwen2.5:7b-instruct-q4_K_M'

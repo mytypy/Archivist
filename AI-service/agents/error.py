@@ -1,6 +1,7 @@
 import asyncio
 import logging
 
+from fastapi import HTTPException, status
 from pydantic import BaseModel
 
 from agents.agent import Agent
@@ -8,7 +9,7 @@ from agents.agent import Agent
 logger = logging.getLogger(name=__name__)
 
 
-async def ai_retryies(max_retries: int, agent: Agent, error_msg: str, data_for_agent: dict) -> str | BaseModel:
+async def ai_retries(max_retries: int, agent: Agent, error_msg: str, data_for_agent: dict) -> BaseModel:
     """Функция-обертка для обработки ошибок при запросах
 
     Args:
@@ -16,12 +17,16 @@ async def ai_retryies(max_retries: int, agent: Agent, error_msg: str, data_for_a
         agent (Agent): Объект агента
         error_msg (str): Сообщение с ошибкой, которое вернется и выведется
         data_for_agent (dict): Данные для агента
+    
+    Raises:
+        HTTPException: Исключение, если модель не выдала нормльный ответ после max_retries
 
     Returns:
-        str | BaseModel: Текст с ошибкой или объект BaseModel
+        BaseModel: Объект BaseModel
     """
     
     error = None
+    
     try:
         result = await agent.invoke(data_for_agent)
     except Exception as er:
@@ -41,6 +46,6 @@ async def ai_retryies(max_retries: int, agent: Agent, error_msg: str, data_for_a
                 error = er
                 logger.error('Получили ошибку при запросе к модели: %s.\n', str(error))
             
-        return error_msg
+        raise HTTPException(detail=error_msg, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return result
