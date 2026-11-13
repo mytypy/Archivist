@@ -11,7 +11,7 @@ def handler_registrator(app: FastAPI):
     
     @app.exception_handler(SQLAlchemyError)
     async def func(request: Request, exc: SQLAlchemyError) -> JSONResponse:
-        """Функция-обработчик ошибки БД
+        """Функция-обработчик ошибок БД
 
         Args:
             request (Request): Объект запроса

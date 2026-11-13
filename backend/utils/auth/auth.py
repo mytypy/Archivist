@@ -54,7 +54,7 @@ async def get_user_chat(max_id: int, chat_max_id: int) -> int | None:
 
 
 async def set_user_cache(max_id: int, user_id: int, ex_min: int = 60 * 60 * 24) -> int | None:
-    """Функция, для создания пользователя в кэше
+    """Функция для сохранения пользователя в кэше
 
     Args:
         user_id (int): ID пользователя
@@ -72,7 +72,7 @@ async def set_user_cache(max_id: int, user_id: int, ex_min: int = 60 * 60 * 24) 
 
 
 async def set_chat_cache(chat_max_id: int, chat_id: int, ex_min: int = 60 * 60 * 24) -> int | None:
-    """Функция, для создания чата в кэше
+    """Функция для сохранения чата в кэше
 
     Args:
         chat_id (int): ID чата
@@ -90,7 +90,7 @@ async def set_chat_cache(chat_max_id: int, chat_id: int, ex_min: int = 60 * 60 *
 
 
 async def set_user_chat(max_id: int, chat_max_id: int, user_chat_id: int, ex_min: int = 60 * 60 * 24) -> int | None:
-    """Функция, для создания user_chat в кэше
+    """Функция, для сохранения user_chat в кэше
 
     Args:
         user_id (int): ID пользователя

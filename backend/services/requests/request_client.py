@@ -19,7 +19,7 @@ class RequestModule:
             retries (int, optional): Кол-во попыток для запроса к 8.8.8.8
 
         Raises:
-            RuntimeError: Ошибка, если неудалось сделать запрос к 8.8.8.8 спустя retries попыток
+            RuntimeError: Исключение, если неудалось сделать запрос к 8.8.8.8 спустя retries попыток
         """
         
         for i in range(1, retries + 1):

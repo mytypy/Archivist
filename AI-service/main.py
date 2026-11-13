@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Главная функция, которая запускает сервер, если модель прогрелась
+    """Главная функция для запуска сервера, если модель прогрелась
 
     Args:
         app (FastAPI): Объект приложения

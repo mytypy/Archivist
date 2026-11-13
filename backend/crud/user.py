@@ -7,7 +7,7 @@ from models.user import User, UserChat
 
 
 async def create_user(max_id: int, session: AsyncSession) -> int | None:
-    """Функция, которая регистрирует пользователя
+    """Функция для регистрации пользователя
 
     Args:
         max_id (int): Max ID пользователя
@@ -33,7 +33,7 @@ async def create_user(max_id: int, session: AsyncSession) -> int | None:
 
 
 async def _get_user(*params, session: AsyncSession, fields: tuple = (User.user_id, )) -> Result[tuple[User]]:
-    """Функция, которая возврашает объект/ы таблицы пользователя
+    """Функция для получения объекта/ов таблицы пользователя
 
     Args:
         session (AsyncSession): Асинхронная сессия
@@ -59,7 +59,7 @@ async def get_user(max_id: int, session: AsyncSession):
     
     
 async def create_user_chat(user_id: int, chat_id: int, session: AsyncSession) -> int:
-    """Функция, которая создает объект чата пользователя и возвращает его ID
+    """Функция для создания объекта чата пользователя
 
     Args:
         user_id (int): ID пользователя
@@ -88,7 +88,7 @@ async def create_user_chat(user_id: int, chat_id: int, session: AsyncSession) ->
 
 
 async def _get_user_chat(*params, session: AsyncSession, fields: tuple = (UserChat.user_chat_id, )) -> Result[tuple[UserChat]]:
-    """Функция, которая возврашает объект/ы таблицы чата пользователя
+    """Функция для получения объекта/ов таблицы чата пользователя
 
     Args:
         session (AsyncSession): Асинхронная сессия
